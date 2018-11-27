@@ -10,22 +10,24 @@
 #include "scene.h"
 
 class Snake final : public Object{
-private:
-
 public:
     /*!
      * Create a new Snake
      */
-    std::list< std::unique_ptr<Object> > snake_sections;
-
+    //std::list< std::unique_ptr<Object> > snake_sections;
+    //std::unique_ptr<Object> first_section;
     Snake(Scene &scene);
+
+    glm::vec3 check_limitations(glm::vec3 position);
+    //bool snake_colision_happen(unique_ptr)
 
     bool update(Scene &scene, float dt) override;
 
     void render(Scene &scene) override;
 
 private:
-    int render_time = -0.5;
+    const float render_constatnt = 0.2;
+    float render_time = -render_constatnt;
     int x_direction = -1;
     int y_direction = 0;
 };

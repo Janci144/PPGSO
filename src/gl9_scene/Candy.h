@@ -21,7 +21,7 @@ private:
 
     // Age of the object in seconds
     float age{0.0f};
-
+    bool is_destroyed = false;
     // Speed and rotational momentum
     glm::vec3 speed;
     glm::vec3 rotMomentum;

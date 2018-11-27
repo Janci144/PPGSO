@@ -24,12 +24,15 @@ SnakeSection::SnakeSection() {
 
     // Initialize static resources if needed
     if (!shader) shader = make_unique<Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
-    if (!texture) texture = make_unique<Texture>(image::loadBMP("Hospital_Blue.bmp"));
+    if (!texture) texture = make_unique<Texture>(image::loadBMP("blbost.bmp"));
     if (!mesh) mesh = make_unique<Mesh>("cube.obj");
 }
 
 bool SnakeSection::update(Scene &scene, float dt) {
     // Fire delay increment
+
+    position = check_limitations(position);
+    std::cout << position.x << "  " << position.y << endl;
 
     // Hit detection
     for ( auto& obj : scene.objects ) {
@@ -54,15 +57,15 @@ bool SnakeSection::update(Scene &scene, float dt) {
     }
 
     // Keyboard controls
-    if(scene.keyboard[GLFW_KEY_LEFT]) {
-        position.x += 10 * dt;
-        rotation.z = -PI/4.0f;
-    } else if(scene.keyboard[GLFW_KEY_RIGHT]) {
-        position.x -= 10 * dt;
-        rotation.z = PI/4.0f;
-    } else {
-        rotation.z = 0;
-    }
+//    if(scene.keyboard[GLFW_KEY_LEFT]) {
+//        position.x += 10 * dt;
+//        rotation.z = -PI/4.0f;
+//    } else if(scene.keyboard[GLFW_KEY_RIGHT]) {
+//        position.x -= 10 * dt;
+//        rotation.z = PI/4.0f;
+//    } else {
+//        rotation.z = 0;
+//    }
 
     // Firing projectiles
 //    if(scene.keyboard[GLFW_KEY_SPACE] && fireDelay > fireRate) {
@@ -95,6 +98,23 @@ void SnakeSection::render(Scene &scene) {
     shader->setUniform("Texture", *texture);
     //shader->setUniform("OverallColor", color);
     mesh->render();
+}
+
+glm::vec3 SnakeSection::check_limitations(glm::vec3 position) {
+    glm::vec3 new_position = position;
+
+    if(position.x > 8 )
+        new_position.x = -8;
+    if(position.x < -8 )
+        new_position.x = 8;
+
+    if(position.y > 8)
+        new_position.y = -8;
+    if(position.y < -8 )
+        new_position.y = 8;
+
+    return new_position;
+
 }
 
 void SnakeSection::onClick(Scene &scene) {

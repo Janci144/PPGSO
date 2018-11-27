@@ -1,4 +1,3 @@
-#pragma once
 // Example gl_scene
 // - Introduces the concept of a dynamic scene of objects
 // - Uses abstract object interface for Update and Render steps
@@ -15,16 +14,15 @@
 
 #include "camera.h"
 #include "scene.h"
-#include "generator.h"
-#include "player.h"
 #include "space.h"
 #include "Snake.h"
+#include "CandyGenerator.h"
 
 using namespace std;
 using namespace glm;
 using namespace ppgso;
 
-const unsigned int SIZE = 1024;
+const unsigned int SIZE = 800;
 
 /*!
  * Custom windows for our simple game
@@ -55,9 +53,9 @@ private:
 
 
     //Add generator to scene
-//    auto generator = make_unique<Generator>();
-//    generator->position.y = 10.0f;
-//    scene.objects.push_back(move(generator));
+    auto generator = make_unique<CandyGenerator>();
+    generator->position.y = 10.0f;
+    scene.objects.push_back(move(generator));
 //
 //    // Add player to the scene
 //    auto player = make_unique<Player>();

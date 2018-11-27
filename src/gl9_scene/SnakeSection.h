@@ -46,6 +46,7 @@ public:
      */
     void render(Scene &scene) override;
 
+    glm::vec3 check_limitations(glm::vec3 position);
 
     /*!
      * Player click event

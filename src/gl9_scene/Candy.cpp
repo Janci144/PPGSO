@@ -33,8 +33,59 @@ Candy::Candy() {
 }
 
 bool Candy::update(Scene &scene, float dt) {
+    if(is_destroyed)
+        return false;
+
     // Count time alive
     age += dt;
+
+    if (age > 10.0f) return false;
+
+//    //kontrolovanie kolizie
+//    for (auto &obj : scene.objects) {
+//        // Ignore self in scene
+//        if (obj.get() == this) continue;
+//
+//        // We only need to collide with asteroids and projectiles, ignore other objects
+//        auto section = dynamic_cast<SnakeSection*>(obj.get()); // dynamic_pointer_cast<Asteroid>(obj);
+//        //auto candy = dynamic_cast<Candy*>(obj.get()); // dynamic_pointer_cast<Asteroid>(obj);
+//
+//        if (!section) {
+//            //std::cout << "Nie je to SnakeSection ani sladkost nechapem" << endl;
+//            continue;
+//        }
+//
+//
+//        // When colliding with other asteroids make sure the object is older than .5s
+//        // This prevents excessive collisions when asteroids explode.
+//        //if (age < 0.5f) continue;
+//
+//        // Compare distance to approximate size of the asteroid estimated from scale.
+//        if(section) {
+//            if (distance(position, obj->position) < (obj->scale.y + scale.y) * 0.7f) {
+//
+//                if (section) {
+//                    std::cout << "Koniec hry!!!!!!!!!!!!!!!!!!1" << endl;
+//                    return false;
+//                }
+//
+//                break;
+////            int pieces = 3;
+////
+////            // Too small to split into pieces
+////            if (scale.y < 0.5) pieces = 0;
+//
+//                // The projectile will be destroyed
+//                //if () ->destroy();
+//                //section->destroy();
+//
+//                // Generate smaller asteroids
+//                //explode(scene, (obj->position + position) / 2.0f, (obj->scale + scale) / 2.0f, pieces);
+//
+//                // Destroy self
+//            }
+//        }
+//    }
 
     // Animate position according to time
     //position += speed * dt;
@@ -42,40 +93,39 @@ bool Candy::update(Scene &scene, float dt) {
     // Rotate the object
     //rotation += rotMomentum * dt;
 
-    // Delete when alive longer than 10s or out of visibility
-    if (age > 10.0f || position.y < -10) return false;
+    // Delete when alive longer than 10s or out of visibilit
 
     // Collide with scene
-    for (auto &obj : scene.objects) {
-        // Ignore self in scene
-        if (obj.get() == this) continue;
-
-        // We only need to collide with asteroids and projectiles, ignore other objects
-        auto section = dynamic_cast<SnakeSection*>(obj.get()); // dynamic_pointer_cast<Asteroid>(obj);
-        if (!section) continue;
-
-        // When colliding with other asteroids make sure the object is older than .5s
-        // This prevents excessive collisions when asteroids explode.
-        //if (age < 0.5f) continue;
-
-        // Compare distance to approximate size of the asteroid estimated from scale.
-        if (distance(position, obj->position) < (obj->scale.y + scale.y) * 0.7f) {
-            int pieces = 3;
-
-            // Too small to split into pieces
-            if (scale.y < 0.5) pieces = 0;
-
-            // The projectile will be destroyed
-            //if () ->destroy();
-            //section->destroy();
-
-            // Generate smaller asteroids
-            //explode(scene, (obj->position + position) / 2.0f, (obj->scale + scale) / 2.0f, pieces);
-
-            // Destroy self
-            return false;
-        }
-    }
+//    for (auto &obj : scene.objects) {
+//        // Ignore self in scene
+//        if (obj.get() == this) continue;
+//
+//        // We only need to collide with asteroids and projectiles, ignore other objects
+//        auto section = dynamic_cast<SnakeSection*>(obj.get()); // dynamic_pointer_cast<Asteroid>(obj);
+//        if (!section) continue;
+//
+//        // When colliding with other asteroids make sure the object is older than .5s
+//        // This prevents excessive collisions when asteroids explode.
+//        //if (age < 0.5f) continue;
+//
+//        // Compare distance to approximate size of the asteroid estimated from scale.
+//        if (distance(position, obj->position) < (obj->scale.y + scale.y) * 0.7f) {
+//            int pieces = 3;
+//
+//            // Too small to split into pieces
+//            if (scale.y < 0.5) pieces = 0;
+//
+//            // The projectile will be destroyed
+//            //if () ->destroy();
+//            //section->destroy();
+//
+//            // Generate smaller asteroids
+//            //explode(scene, (obj->position + position) / 2.0f, (obj->scale + scale) / 2.0f, pieces);
+//
+//            // Destroy self
+//            return false;
+//        }
+//    }
 
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
@@ -123,5 +173,9 @@ void Candy::onClick(Scene &scene) {
     cout << "Asteroid clicked!" << endl;
     explode(scene, position, {10.0f, 10.0f, 10.0f}, 0 );
     age = 10000;
+}
+
+void Candy::destroy() {
+    is_destroyed = true;
 }
 

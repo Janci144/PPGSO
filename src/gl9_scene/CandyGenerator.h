@@ -25,7 +25,10 @@ bool update(Scene &scene, float dt) override;
  */
 void render(Scene &scene) override;
 
-float time = 0.0f;
+float time = 15.0f;
+int create_after = 10;
+int number_of_candys = 0;
+int max_candys = 2;
 };
 
 
